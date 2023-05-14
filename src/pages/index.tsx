@@ -1,32 +1,42 @@
-import { TextInput } from "@mantine/core"
-import React, { useState, useRef } from "react"
-import { reveal } from "./lib/calc";
+import React, { useState } from "react"
+import { reveal, numToJpYen } from "./lib/calc";
+import { NumSlider } from "./components/Slider";
 
 export default function Home() {
-  const [revealed, setRevealed] = useState<number>();
-  const incomeRef = useRef<HTMLInputElement>(null);
-  const overworkHoursRef = useRef<HTMLInputElement>(null);
+  const [income, setIncome] = useState<number>(400);
+  const [overworkHours, setOverworkHours] = useState<number>(20);
+  const result = reveal(income, overworkHours);
 
-  const handleChange = () => {
-    const income = incomeRef.current?.value;
-    const overworkHours = overworkHoursRef.current?.value;
-    if (income && overworkHours) {
-      const revealed = reveal(Number(income), Number(overworkHours));
-      setRevealed(revealed);
-    }
+  const handleChangeIncomeSlider = (v: number) => {
+    setIncome(v);
+  }
+
+  const handleChangeOverWorkHoursSlider = (v: number) => {
+    setOverworkHours(v);
   }
 
   return (
     <>
       <main>
         <p>年収</p>
-        <TextInput ref={incomeRef} placeholder="年収" type="number" onChange={handleChange} />
+        <NumSlider
+          max={1200}
+          value={income}
+          handleChange={handleChangeIncomeSlider}
+          interval={100}
+          step={10}
+        />
         <p>みなし残業時間</p>
-        <TextInput ref={overworkHoursRef} placeholder="みなし残業時間" type="number" onChange={handleChange} />
+        <NumSlider
+          max={80}
+          value={overworkHours}
+          handleChange={handleChangeOverWorkHoursSlider}
+          interval={10}
+        />
         <p>みなし残業がない場合の年収</p>
-        <p>{revealed}</p>
+        <p>{numToJpYen(result)}</p>
         <p>予想基本給</p>
-        <p>{revealed && revealed / 12}</p>
+        <p>{numToJpYen(result / 12)}</p>
       </main>
     </>
   )
