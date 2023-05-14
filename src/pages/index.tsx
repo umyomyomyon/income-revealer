@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { reveal, numToJpYen } from "./lib/calc";
-import { NumSlider } from "./components/Slider";
-import { Info } from "./components/Info";
+import { reveal, numToJpYen } from "../lib/calc";
+import { NumSlider } from "../components/Slider";
+import { Info } from "../components/Info";
 import { createStyles, Text, Title, Flex } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
